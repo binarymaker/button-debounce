@@ -26,8 +26,15 @@
 #include "stm32f0xx_hal.h"
 
 #define TICK_TIMER          HAL_GetTick()               /* 1ms timer */
-#define DEBOUNCE_TIME       10
-#define ON_DELAY            100
-#define OFF_DELAY           100
+
+/*
+ * Default confanfiguration for all button object 
+ * 
+ * Refer fn button_filter()
+ *       button->db_time
+ */
+#define DEBOUNCE_TIME       100
+#define ON_DELAY            0
+#define OFF_DELAY           0
 
 #endif // BM_41f7266e_7c45_11e9_b196_c8ff28b6c6d9

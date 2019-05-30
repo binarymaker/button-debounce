@@ -514,6 +514,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Stdio-port</GroupName>
+          <Files>
+            <File>
+              <FileName>stdio-port-stm32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User-Library\stdio-port-stm32\stdio-port-stm32.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utility</GroupName>
+          <Files>
+            <File>
+              <FileName>utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User-Library\utililty\utility.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

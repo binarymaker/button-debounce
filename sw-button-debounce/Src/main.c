@@ -43,6 +43,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio-port-stm32.h"
+#include "utility.h"
 #include "button.h"
 /* USER CODE END Includes */
 
@@ -68,9 +70,12 @@ UART_HandleTypeDef huart1;
 button_t btn;
 bool longpress = false;
 bool longrelease = false;
-bool state;
+bool orgState;
+bool debounceState;
 bool filter;
 int counter;
+
+uint32_t print_time;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,17 +126,31 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int orgCount = 0;
+  int last_orgState = 0;
+  int debounceCount = 0;
+  int last_debounceState = 0;
   while (1)
   {
-    state = button_read(&btn);
-    longpress = button_pressedFor(&btn, 5000);
-    longrelease = button_releasedFor(&btn, 5000);
-    
-    if(button_wasPressed(&btn)){
-      counter++;
+    orgState = !(GPIOB->IDR & GPIO_PIN_4); /* Active low logic */
+    debounceState = button_read(&btn);
+
+    if (orgState != last_orgState){
+      last_orgState = orgState;
+      orgCount++;
     }
     
-    HAL_Delay(2);
+    if (debounceState != last_debounceState){
+      last_debounceState = debounceState;
+      debounceCount++;
+    }
+    
+    if (HAL_GetTick() - print_time > 500)
+    {
+      print_time = HAL_GetTick();
+      printf("$%d %d;", orgCount, debounceCount);
+    }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
