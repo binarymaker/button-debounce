@@ -3,28 +3,30 @@ Microcontroller GPIO button interface library.
 
 [Library files]
  
-# Concept block 
+# Debounce concept 
 
 ```
                           _______________________
 Expected switch  ________|                       |___________________
                
-                               __________________ 
-Actual switch    ________||||||                  ||||||___________
-                         <---->                  <---->
-                             ^----Button glitches---^ 
-                           ______________________
-Debounce Delay   _________|                      |___________________
+                              ___________________
+Actual switch    ________|||||                   |||||_______________
+                         <--->                   <--->
+                           ^---_Button glitches----^ 
+                          _______________________
+Debounce Delay   ________|                       |___________________
 applied
                                 _______________________
 Filter On-Off    ______________|                       |_____________
 Delay Applied             <---->                  <---->
                    On delay-^              Off delay-^
-                   
-Filter delay used for noise remove
+               
+```
++ Filter delay used for noise remove
+```
                                               ______ _____
-signal           ______|__________ _|________|      |     |________
-                 Noise-^------------^---------------^
+signal           ______|___________|_________|      |     |________
+                 Noise-^-----------^----------------^
                         ___         ___       ______     _
 Debounce delay   ______|   |_______|   |_____|      |___| |________ NOT OK
 signal
