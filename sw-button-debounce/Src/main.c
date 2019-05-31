@@ -70,10 +70,9 @@ UART_HandleTypeDef huart1;
 button_t btn;
 bool longpress = false;
 bool longrelease = false;
-bool orgState;
-bool debounceState;
+bool state;
 bool filter;
-int counter;
+int counter = 0;
 
 uint32_t print_time;
 /* USER CODE END PV */
@@ -126,29 +125,30 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int orgCount = 0;
-  int last_orgState = 0;
-  int debounceCount = 0;
-  int last_debounceState = 0;
+  uint32_t longpress_inc_time = 0;
   while (1)
   {
-    orgState = !(GPIOB->IDR & GPIO_PIN_4); /* Active low logic */
-    debounceState = button_read(&btn);
-
-    if (orgState != last_orgState){
-      last_orgState = orgState;
-      orgCount++;
+    
+    button_read(&btn);
+    
+    if (button_wasPressed(&btn))
+    {
+      counter += 1;
     }
     
-    if (debounceState != last_debounceState){
-      last_debounceState = debounceState;
-      debounceCount++;
+    if (button_pressedFor(&btn, 1000))
+    {
+      if (HAL_GetTick() - longpress_inc_time > 500)
+      {
+        longpress_inc_time = HAL_GetTick();
+        counter += 5;
+      }
     }
     
     if (HAL_GetTick() - print_time > 500)
     {
       print_time = HAL_GetTick();
-      printf("$%d %d;", orgCount, debounceCount);
+      printf("$%d;", counter);
     }
 
     /* USER CODE END WHILE */
